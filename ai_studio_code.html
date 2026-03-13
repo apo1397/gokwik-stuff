@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoKwik - Klotho Intelligence Wireframe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-[#f4f7f9] flex h-screen overflow-hidden text-gray-800">
+
+    <!-- SIDEBAR (Persistent) -->
+    <aside class="w-64 bg-[#012a52] text-white flex flex-col flex-shrink-0 relative z-50">
+        <div class="p-6 flex items-center space-x-2">
+            <div class="bg-orange-500 p-1 rounded"><i class="fas fa-bolt text-white"></i></div>
+            <span class="text-xl font-bold tracking-tight">GoKwik</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto text-sm">
+            <div class="px-4 py-2 space-y-1">
+                <div class="flex items-center space-x-3 p-2 opacity-60"><i class="fas fa-chart-bar w-5"></i>
+                    <span>Executive Summary</span>
+                </div>
+                <div class="bg-[#1e40af] border-l-4 border-white flex items-center space-x-3 p-2 rounded-r-md">
+                    <i class="fas fa-project-diagram w-5"></i> <span>Kwik Flows</span>
+                </div>
+                <div class="flex items-center space-x-3 p-2 opacity-60"><i class="fas fa-undo w-5"></i> <span>Return
+                        Prime</span></div>
+                <div class="flex items-center space-x-3 p-2 opacity-60"><i class="fas fa-user-shield w-5"></i>
+                    <span>Admin</span>
+                </div>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-blue-900 flex items-center justify-between text-xs mt-auto">
+            <div class="flex items-center space-x-2">
+                <div class="w-7 h-7 bg-gray-500 rounded flex items-center justify-center font-bold">AA</div>
+                <span class="truncate w-24">Apoorv Abhishek</span>
+            </div>
+            <i class="fas fa-sign-out-alt opacity-50"></i>
+        </div>
+    </aside>
+
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4">
+            <div class="p-6 border-b">
+                <h3 class="text-lg font-bold text-gray-900">Unsaved Changes</h3>
+            </div>
+            <div class="p-6">
+                <p class="text-sm text-gray-600">You have unsaved changes. Are you sure you want to go back? Your
+                    changes will be lost.</p>
+            </div>
+            <div class="p-6 border-t flex justify-end space-x-3">
+                <button onclick="cancelLeave()"
+                    class="px-4 py-2 border border-gray-300 rounded text-sm font-bold text-gray-700 hover:bg-gray-50">
+                    Stay on Page
+                </button>
+                <button onclick="confirmLeave()"
+                    class="px-4 py-2 bg-[#012a52] text-white rounded text-sm font-bold hover:bg-[#011f3d]">
+                    Discard Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+        <!-- HEADER (Persistent) -->
+        <header class="h-14 bg-white border-b flex items-center justify-between px-6 flex-shrink-0">
+            <div class="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-gray-400">
+                <i class="fas fa-home"></i> <span>&gt; Workflows</span>
+                <span id="breadcrumb-sub" class="hidden"> &gt; Klotho Intelligence</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-sm text-gray-500">Switch merchant</span>
+                <div
+                    class="border rounded px-3 py-1 flex items-center space-x-2 bg-gray-50 text-sm font-semibold cursor-pointer">
+                    <div class="w-3 h-3 bg-orange-500 rounded-sm"></div>
+                    <span>PlixLife - Active</span>
+                    <i class="fas fa-chevron-down text-[10px]"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- VIEW 1: DASHBOARD LIST -->
+        <main id="dashboard-view" class="flex-1 overflow-y-auto p-6 space-y-6">
+            <div class="flex justify-between items-center max-w-5xl mx-auto">
+                <div class="flex bg-white p-1 rounded-md border text-sm font-medium">
+                    <button class="bg-[#012a52] text-white px-4 py-1.5 rounded">All</button>
+                    <button class="px-4 py-1.5 text-gray-500">Workflows</button>
+                </div>
+                <button class="bg-[#012a52] text-white px-4 py-1.5 rounded text-sm font-bold flex items-center">
+                    <i class="fas fa-plus mr-2"></i> Create
+                </button>
+            </div>
+
+            <!-- Priority Banner -->
+            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 flex items-start space-x-3 max-w-5xl mx-auto">
+                <i class="fas fa-info-circle text-blue-500 mt-1"></i>
+                <div class="text-sm">
+                    <p class="font-bold">Priority-Based Execution</p>
+                    <p class="text-gray-600 italic text-xs">Workflows are executed in priority order. Drag and drop to
+                        change.</p>
+                </div>
+            </div>
+
+            <div class="space-y-6 max-w-5xl mx-auto">
+                <!-- KLOTHO INTELLIGENCE CARD -->
+                <div class="bg-white border rounded-xl p-6 shadow-sm border-l-4 border-purple-600">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-6 bg-purple-600 rounded-full relative cursor-pointer">
+                                <div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow-md"></div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900">Klotho Intelligence</h3>
+                                <p class="text-sm text-gray-500 mt-1 font-medium italic">Custom logic to mark customers
+                                    as High Risk</p>
+                            </div>
+                        </div>
+                        <button class="text-gray-300"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                    <div class="mt-6">
+                        <button onclick="showEdit()"
+                            class="border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-bold flex items-center hover:bg-gray-50">
+                            <i class="fas fa-pen text-[10px] mr-2"></i> Edit Workflow
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRIORITY 1 -->
+                <div class="relative">
+                    <div
+                        class="absolute -top-3 left-0 bg-blue-100 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-200 uppercase">
+                        Priority 1</div>
+                    <div class="bg-white border rounded-xl p-6 pt-8 shadow-sm border-l-4 border-blue-900">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-6 bg-blue-900 rounded-full relative">
+                                    <div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold">Test COD_Plix</h3>
+                                    <p class="text-xs text-gray-400 mt-1">Workflow Created On: 25th Nov 2025</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-ellipsis-v text-gray-300"></i>
+                        </div>
+                        <div class="mt-6">
+                            <button onclick="showRegularEdit()"
+                                class="border border-gray-300 text-gray-700 px-4 py-2 rounded text-sm font-bold hover:bg-gray-50">Edit
+                                Workflow</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- VIEW 2: EDIT VIEW (Hidden by default) -->
+        <div id="edit-view" class="flex-1 flex overflow-hidden hidden">
+            <!-- MAIN CONFIG -->
+            <main class="flex-1 overflow-y-auto p-8">
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <button onclick="showDashboard()"
+                            class="w-8 h-8 rounded-full border flex items-center justify-center text-gray-500 bg-white hover:bg-gray-50">
+                            <i class="fas fa-chevron-left text-xs"></i>
+                        </button>
+                        <h1 class="text-xl font-bold">Edit Klotho Intelligence</h1>
+                        <div class="flex items-center space-x-2 bg-gray-100 p-1.5 rounded-full px-3">
+                            <span class="text-[10px] font-bold uppercase text-gray-500">Status</span>
+                            <div id="status-toggle" data-toggle="true" onclick="toggleStatus()"
+                                class="w-10 h-5 bg-purple-600 rounded-full relative cursor-pointer">
+                                <div id="status-ball"
+                                    class="absolute right-1 top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border rounded-lg p-4 shadow-sm">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1">Workflow Name</label>
+                        <input type="text" value="Klotho Intelligence High Risk Logic"
+                            class="w-full text-sm font-medium bg-transparent" readonly>
+                    </div>
+
+                    <!-- RULE 1 -->
+                    <div
+                        class="bg-white border rounded-xl shadow-sm overflow-hidden border-l-4 border-purple-600 items-center">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-lg font-bold">High COD RTO Behavior</h3>
+                                <div id="rule-1-toggle" data-toggle="true"
+                                    onclick="toggleGeneric('rule-1-toggle', 'rule-1-ball')"
+                                    class="w-10 h-5 bg-purple-600 rounded-full relative cursor-pointer">
+                                    <div id="rule-1-ball"
+                                        class="absolute right-1 top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1 italic mb-6">Identify customers exhibiting consistently
+                                high RTO rates across the GoKwik network.</p>
+                            <div class="grid grid-cols-3 gap-6">
+                                <div class="space-y-1"><label class="text-[10px] font-bold text-gray-400 uppercase">Min
+                                        RTO</label><input type="number" value="2"
+                                        class="w-full border rounded p-2 text-sm"></div>
+                                <div class="space-y-1"><label class="text-[10px] font-bold text-gray-400 uppercase">Min
+                                        COD</label><input type="number" value="3"
+                                        class="w-full border rounded p-2 text-sm"></div>
+                                <div class="space-y-1"><label
+                                        class="text-[10px] font-bold text-gray-400 uppercase">Cut-off %</label><input
+                                        type="number" value="70" class="w-full border rounded p-2 text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OR -->
+                    <div class="flex justify-center relative py-6">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="h-full w-[2px] bg-gray-200"></div>
+                        </div>
+                        <div
+                            class="relative z-10 bg-white border rounded-full px-4 py-1 text-[10px] font-bold text-gray-400">
+                            OR</div>
+                    </div>
+                    <!-- RULE 2 -->
+                    <div class="bg-white border rounded-xl shadow-sm overflow-hidden border-l-4 border-purple-600">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-lg font-bold">Order Velocity</h3>
+                                <div id="rule-2-toggle" data-toggle="true"
+                                    onclick="toggleGeneric('rule-2-toggle', 'rule-2-ball')"
+                                    class="w-10 h-5 bg-purple-600 rounded-full relative cursor-pointer">
+                                    <div id="rule-2-ball"
+                                        class="absolute right-1 top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1 italic mb-6">Detect high short-term activity.</p>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="space-y-1"><label
+                                        class="text-[10px] font-bold text-gray-400 uppercase">Window (hrs)</label><input
+                                        type="number" value="72" class="w-full border rounded p-2 text-sm"></div>
+                                <div class="space-y-1"><label
+                                        class="text-[10px] font-bold text-gray-400 uppercase">Threshold</label><input
+                                        type="number" value="2" class="w-full border rounded p-2 text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center relative py-6">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="h-full w-[2px] bg-gray-200"></div>
+                        </div>
+                        <div
+                            class="relative z-10 bg-white border rounded-full px-4 py-1 text-[10px] font-bold text-gray-400">
+                            OR</div>
+                    </div>
+
+                    <div class="bg-white border rounded-xl shadow-sm overflow-hidden border-l-4 border-purple-600">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-lg font-bold">High Cart Value</h3>
+                                <div id="rule-3-toggle" data-toggle="true"
+                                    onclick="toggleGeneric('rule-3-toggle', 'rule-3-ball')"
+                                    class="w-10 h-5 bg-purple-600 rounded-full relative cursor-pointer">
+                                    <div id="rule-3-ball"
+                                        class="absolute right-1 top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1 italic mb-6">Automatically flag high-value orders for
+                                enhanced risk management.</p>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="space-y-1"><label class="text-[10px] font-bold text-gray-400 uppercase">Cart
+                                        Value Cut-off</label><input type="number" value="4000"
+                                        class="w-full border rounded p-2 text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center relative py-6">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="h-full w-[2px] bg-gray-200"></div>
+                        </div>
+                        <div
+                            class="relative z-10 bg-white border rounded-full px-4 py-1 text-[10px] font-bold text-gray-400">
+                            OR</div>
+                    </div>
+
+                    <div class="bg-white border rounded-xl shadow-sm overflow-hidden border-l-4 border-purple-600">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-lg font-bold">Blocked Keywords</h3>
+                                <div id="rule-4-toggle" data-toggle="true"
+                                    onclick="toggleGeneric('rule-4-toggle', 'rule-4-ball')"
+                                    class="w-10 h-5 bg-purple-600 rounded-full relative cursor-pointer">
+                                    <div id="rule-4-ball"
+                                        class="absolute right-1 top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1 italic mb-6">Prevents entry of dummy or evidently
+                                fraudulent customer details. Checked across Customer Name &amp; Address fields</p>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="space-y-1"><label
+                                        class="text-[10px] font-bold text-gray-400 uppercase">Blocked
+                                        strings</label><input type="text" value="test,dummy,fake"
+                                        class="w-full border rounded p-2 text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sticky Footer -->
+                <div
+                    class="fixed bottom-0 right-0 left-64 bg-white border-t p-4 flex justify-end shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-40">
+                    <button id="save-btn" onclick="showDashboard()" disabled
+                        class="bg-[#012a52] text-white px-10 py-2.5 rounded font-bold text-sm shadow-lg opacity-50 cursor-not-allowed transition-all">
+                        Save Configuration
+                    </button>
+                </div>
+            </main>
+
+            <!-- RIGHT PANEL -->
+            <aside class="w-80 bg-white border-l p-6 flex-shrink-0">
+                <h4 class="font-bold text-sm mb-4">About Klotho</h4>
+                <p class="text-xs text-gray-500 mb-6 leading-relaxed">
+
+                    Klotho Rules allow you to tailor risk detection to mark a customer as High Risk based on your
+                    specific business rules and needs. By defining these custom parameters, you can ensure your risk
+                    management strategy is perfectly aligned with your operational requirements.
+
+                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded text-[11px] text-gray-600">
+                    <div class="font-bold text-blue-600 mb-2 uppercase">Pro Tips</div>
+                    <ul class="space-y-2 list-disc pl-3">
+                        <li>Maintain a high cut-off to avoid false positives.</li>
+                        <li>Velocity helps prevent bot attacks.</li>
+                        <li>Cart Value is recommended to be 4x your AOV. In case AOV is increasing then this value needs
+                            to be updated.</li>
+                        <li>Place test orders using blocked keywords</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+
+        <!-- VIEW 3: REGULAR EDIT VIEW (Hidden by default) -->
+        <div id="regular-edit-view" class="flex-1 flex overflow-hidden hidden bg-white">
+            <!-- MAIN CONFIG -->
+            <main class="flex-1 overflow-y-auto relative flex flex-col items-center">
+                <!-- STEPPER Container -->
+                <div class="w-full flex justify-center py-6 border-b border-gray-100 bg-white">
+                    <div class="flex items-center space-x-24 px-6 text-sm font-medium w-full max-w-4xl justify-center">
+                        <div class="flex items-center space-x-3 text-gray-900">
+                            <div
+                                class="w-6 h-6 rounded-full bg-[#012a52] text-white flex items-center justify-center text-xs font-bold shadow-sm">
+                                1</div>
+                            <div class="flex flex-col"><span
+                                    class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Step
+                                    1</span><span class="font-bold">Segment</span></div>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-400 opacity-70">
+                            <div
+                                class="w-6 h-6 rounded-full bg-gray-100 border text-gray-500 flex items-center justify-center text-xs font-bold">
+                                2</div>
+                            <div class="flex flex-col"><span
+                                    class="text-[10px] uppercase tracking-widest font-bold">Step
+                                    2</span><span>Configure</span></div>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-400 opacity-70">
+                            <div
+                                class="w-6 h-6 rounded-full bg-gray-100 border text-gray-500 flex items-center justify-center text-xs font-bold">
+                                3</div>
+                            <div class="flex flex-col"><span
+                                    class="text-[10px] uppercase tracking-widest font-bold">Step
+                                    3</span><span>Summary</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORM CONTENT -->
+                <div class="w-full max-w-5xl px-8 py-8 pb-24 flex-1">
+                    <!-- Header -->
+                    <div class="flex items-center space-x-4 mb-6">
+                        <button onclick="showDashboardFromRegular()"
+                            class="w-8 h-8 rounded border flex items-center justify-center text-gray-500 bg-white hover:bg-gray-50">
+                            <i class="fas fa-chevron-left text-sm"></i>
+                        </button>
+                        <h1 class="text-2xl font-bold text-gray-900">Create Segment</h1>
+                    </div>
+
+                    <!-- Card 1: Name your workflow -->
+                    <div class="bg-white border rounded-lg p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] mb-6">
+                        <label class="block text-sm font-bold mb-2">Name your workflow</label>
+                        <input type="text" value="COD Block"
+                            class="w-full border rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    </div>
+
+                    <!-- Card 2: Segment details -->
+                    <div class="bg-white border rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.04)] relative flex flex-col">
+                        <div class="p-6">
+                            <button class="absolute top-6 right-6 text-gray-400 hover:text-gray-600"><i
+                                    class="fas fa-trash"></i></button>
+                            <h2 class="text-lg font-bold mb-1">Segment</h2>
+                            <p class="text-sm text-gray-600 mb-6 max-w-2xl">Trigger to<br>Set conditions to target a
+                                specific customer segment and automate actions based on their attributes or behavior.
+                            </p>
+
+                            <!-- Category Tabs -->
+                            <div class="flex flex-wrap gap-3 mb-8">
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-user mb-0.5"></i><span>Customer</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-map-marker-alt mb-0.5"></i><span>Address</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-shield-alt mb-0.5"></i><span>RTO Risk</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-shopping-cart mb-0.5"></i><span>Cart</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-magic mb-0.5"></i><span>UTMs</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-box mb-0.5"></i><span>SKUs</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border border-[#012a52] rounded-md text-white px-4 py-2 text-sm bg-[#012a52] font-medium relative shadow-md">
+                                    <i class="fas fa-lightbulb text-yellow-300 mb-0.5"></i><span>AI Segments</span>
+                                    <div
+                                        class="absolute -top-2.5 -right-2.5 bg-green-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white tracking-widest">
+                                        New</div>
+                                </button>
+                            </div>
+
+                            <!-- Attributes -->
+                            <h3 class="text-sm font-bold mb-1">Attributes</h3>
+                            <p class="text-xs text-gray-500 mb-6">Select an attribute to define your segment.</p>
+
+                            <div class="flex flex-wrap gap-x-8 gap-y-4 mb-8">
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Gender</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Discount Lovers</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Bulk Buyers</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Cross-Sell Potential</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">High-Spend Customers</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Loyalty Level</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Credit Card Users</span>
+                                </label>
+                                <!-- Selected Active State -->
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div
+                                        class="w-4 h-4 rounded-full border-[5px] border-[#012a52] bg-white ring-1 ring-[#012a52]">
+                                    </div><span class="text-sm text-gray-900 font-bold">Prepaid Wallet Users</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">BNPL Users</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Engagement Tier</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Preferred Payment Method</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Favorite Shopping Category</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Above-Average Spenders</span>
+                                </label>
+                            </div>
+
+                            <!-- Condition -->
+                            <h3 class="text-sm font-bold mb-1 mt-2">Define Segment Condition</h3>
+                            <p class="text-xs text-gray-500 mb-6">Specify the rule to filter customers in this segment.
+                            </p>
+
+                            <label class="block text-sm font-bold mb-2">Match Criteria</label>
+                            <div class="relative w-full max-w-sm border rounded-md bg-white mb-6">
+                                <select
+                                    class="w-full bg-transparent p-2.5 text-sm appearance-none text-gray-800 focus:outline-none">
+                                    <option>Equal to</option>
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+
+                            <label class="block text-sm font-bold mb-2">Value</label>
+                            <div class="relative w-full max-w-sm border rounded-md bg-white">
+                                <select
+                                    class="w-full bg-transparent p-2.5 text-sm appearance-none text-gray-800 focus:outline-none">
+                                    <option>Yes/No</option>
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add Condition Button -->
+                    <div class="flex flex-col items-center mt-0">
+                        <div class="h-8 w-[1px] bg-gray-300"></div>
+                        <button
+                            class="border border-[#012a52] text-[#012a52] px-6 py-1.5 rounded-md text-xs font-bold bg-white hover:bg-gray-50 transition-colors shadow-sm">
+                            Add Condition
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sticky Next Button Banner -->
+                <div
+                    class="sticky bottom-0 w-full bg-white border-t p-3 flex justify-end shadow-[0_-4px_10px_rgba(0,0,0,0.03)] z-40">
+                    <div class="w-full max-w-5xl px-8 flex justify-end">
+                        <button
+                            class="bg-[#012a52] text-white px-8 py-2 rounded text-sm font-bold shadow-md hover:bg-[#011f3d] transition-colors">Next</button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- RIGHT PANEL -->
+            <aside class="w-[340px] bg-white border-l flex-shrink-0 relative overflow-y-auto">
+                <div class="p-8">
+                    <h2 class="font-bold text-lg mb-4 text-gray-900 tracking-tight">About this Segment</h2>
+                    <p class="text-sm text-gray-700 mb-8 leading-relaxed">
+                        Segment prepaid cardholders (Yes/No) for wallet-specific cashback offers.
+                    </p>
+                    <h3 class="font-bold text-sm mb-4 text-gray-900">Prepaid Wallet Users (AI Segments)</h3>
+
+                    <!-- Segment Insights -->
+                    <div class="mb-8">
+                        <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">Segment Insights
+                        </h4>
+                        <div class="bg-white border rounded-lg shadow-sm overflow-hidden flex flex-col">
+                            <div class="overflow-x-auto scrolling-touch">
+                                <table class="w-full text-left border-collapse min-w-[440px]">
+                                    <thead>
+                                        <tr class="bg-gray-50 border-b border-gray-100">
+                                            <th
+                                                class="sticky left-0 bg-gray-50 px-3 py-2 text-[9px] font-bold text-gray-500 uppercase tracking-tight z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
+                                                Level</th>
+                                            <th
+                                                class="px-3 py-2 text-[9px] font-bold text-gray-500 uppercase tracking-tight text-right">
+                                                Base (%)</th>
+                                            <th
+                                                class="px-3 py-2 text-[9px] font-bold text-gray-500 uppercase tracking-tight text-right">
+                                                Avg AOV</th>
+                                            <th
+                                                class="px-3 py-2 text-[9px] font-bold text-gray-500 uppercase tracking-tight text-right whitespace-nowrap">
+                                                RTO %</th>
+                                            <th
+                                                class="px-3 py-2 text-[9px] font-bold text-gray-500 uppercase tracking-tight text-right whitespace-nowrap">
+                                                Conv. Rate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-50 text-[11px]">
+                                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                                            <td
+                                                class="sticky left-0 bg-white group-hover:bg-gray-50/50 px-3 py-2.5 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
+                                                <div class="flex items-center space-x-2">
+                                                    <div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                                                    <span class="font-semibold text-gray-700">High</span>
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                30% - 35%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                ₹5.4k - 6k</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-rose-600 italic whitespace-nowrap">
+                                                8% - 12%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-emerald-600 italic whitespace-nowrap">
+                                                3.4% - 4%</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                                            <td
+                                                class="sticky left-0 bg-white group-hover:bg-gray-50/50 px-3 py-2.5 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
+                                                <div class="flex items-center space-x-2">
+                                                    <div class="w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                                                    <span class="font-semibold text-gray-700">Medium</span>
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                45% - 50%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                ₹2.2k - 2.8k</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-rose-600 italic whitespace-nowrap">
+                                                15% - 18%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-emerald-600 italic whitespace-nowrap">
+                                                1.8% - 2.2%</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                                            <td
+                                                class="sticky left-0 bg-white group-hover:bg-gray-50/50 px-3 py-2.5 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
+                                                <div class="flex items-center space-x-2">
+                                                    <div class="w-1.5 h-1.5 rounded-full bg-orange-400"></div>
+                                                    <span class="font-semibold text-gray-700">Low</span>
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                20% - 25%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                ₹800 - 1.2k</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-rose-600 italic whitespace-nowrap">
+                                                30% - 35%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-emerald-600 italic whitespace-nowrap">
+                                                0.5% - 1%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-gray-50 py-1 px-3 border-t border-gray-100/50 flex justify-center">
+                                <div class="flex space-x-1">
+                                    <div class="w-2 h-0.5 bg-blue-500 rounded-full"></div>
+                                    <div class="w-1 h-0.5 bg-gray-300 rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#f4f8ff] rounded-xl p-5 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-blue-500/5 rounded-bl-full -z-0"></div>
+                        <div class="flex items-center space-x-2 mb-3 relative z-10">
+                            <i class="fas fa-lightbulb text-yellow-400 text-lg drop-shadow-sm mb-0.5"></i>
+                            <span class="font-bold text-blue-600 text-[13px] tracking-wide">Pro Tips</span>
+                        </div>
+                        <ul class="list-disc pl-5 space-y-2 text-[13px] text-gray-600 relative z-10 leading-relaxed">
+                            <li>Offer 'Reload Bonus' (for instance, 'Get 10% extra on ₹500+') to prepaid card users</li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Global Floating Buttons (Visible in this view) -->
+            <div class="fixed bottom-6 right-6 flex flex-col items-center space-y-4 z-50">
+                <!-- Chat Bubble -->
+                <div class="relative mb-12">
+                    <button
+                        class="w-14 h-14 bg-[#1B63F2] text-white rounded-full shadow-[0_4px_16px_rgba(27,99,242,0.4)] flex items-center justify-center hover:bg-blue-600 transition-all border-2 border-[#1B63F2] ring-2 ring-purple-600 hover:scale-105 group absolute bottom-0 right-0">
+                        <i class="far fa-comment-dots text-2xl group-hover:scale-110 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="fixed bottom-6 right-28 z-50">
+                <!-- Help Button -->
+                <button
+                    class="bg-[#1e2433] hover:bg-[#141822] transition-colors text-white px-5 py-2 rounded-full text-xs font-bold shadow-lg flex items-center space-x-2">
+                    <i class="far fa-question-circle text-lg"></i><span>Help</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let initialState = {
+            inputs: new Map(),
+            toggles: new Map()
+        };
+
+        function showEdit() {
+            document.getElementById('dashboard-view').classList.add('hidden');
+            document.getElementById('edit-view').classList.remove('hidden');
+            document.getElementById('breadcrumb-sub').classList.remove('hidden');
+            captureInitialState();
+        }
+
+        function showDashboard() {
+            if (isDirty()) {
+                document.getElementById('confirm-modal').classList.remove('hidden');
+                return;
+            }
+            actuallyGoBack();
+        }
+
+        function actuallyGoBack() {
+            document.getElementById('dashboard-view').classList.remove('hidden');
+            document.getElementById('edit-view').classList.add('hidden');
+            document.getElementById('breadcrumb-sub').classList.add('hidden');
+            disableSave();
+        }
+
+        function confirmLeave() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            actuallyGoBack();
+        }
+
+        function cancelLeave() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+        }
+
+        function showRegularEdit() {
+            document.getElementById('dashboard-view').classList.add('hidden');
+            document.getElementById('regular-edit-view').classList.remove('hidden');
+            document.getElementById('breadcrumb-sub').classList.add('hidden');
+        }
+
+        function showDashboardFromRegular() {
+            document.getElementById('dashboard-view').classList.remove('hidden');
+            document.getElementById('regular-edit-view').classList.add('hidden');
+        }
+
+        function toggleStatus() {
+            toggleGeneric('status-toggle', 'status-ball');
+        }
+
+        function toggleGeneric(toggleId, ballId) {
+            const toggle = document.getElementById(toggleId);
+            const ball = document.getElementById(ballId);
+            if (toggle.classList.contains('bg-purple-600')) {
+                toggle.classList.replace('bg-purple-600', 'bg-gray-300');
+                ball.classList.replace('right-1', 'left-1');
+            } else {
+                toggle.classList.replace('bg-gray-300', 'bg-purple-600');
+                ball.classList.replace('left-1', 'right-1');
+            }
+            updateSaveState();
+        }
+
+        function getToggleState(toggle) {
+            return toggle.classList.contains('bg-purple-600');
+        }
+
+        function captureInitialState() {
+            initialState.inputs.clear();
+            initialState.toggles.clear();
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                initialState.inputs.set(input, input.value);
+            });
+            const toggles = document.querySelectorAll('[data-toggle="true"]');
+            toggles.forEach(toggle => {
+                initialState.toggles.set(toggle, getToggleState(toggle));
+            });
+            updateSaveState();
+        }
+
+        function isDirty() {
+            for (const [input, value] of initialState.inputs.entries()) {
+                if (input.value !== value) {
+                    return true;
+                }
+            }
+            for (const [toggle, value] of initialState.toggles.entries()) {
+                if (getToggleState(toggle) !== value) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function enableSave() {
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.disabled = false;
+            saveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        function disableSave() {
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.disabled = true;
+            saveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        function updateSaveState() {
+            if (isDirty()) {
+                enableSave();
+            } else {
+                disableSave();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            captureInitialState();
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', updateSaveState);
+            });
+        });
+    </script>
+</body>
+
+</html>
