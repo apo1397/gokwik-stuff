@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoKwik - Create Workflow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-[#f4f7f9] flex h-screen overflow-hidden text-gray-800">
+
+    <aside class="w-64 bg-[#012a52] text-white flex flex-col flex-shrink-0 relative z-50">
+        <div class="p-6 flex items-center space-x-2">
+            <div class="bg-orange-500 p-1 rounded"><i class="fas fa-bolt text-white"></i></div>
+            <span class="text-xl font-bold tracking-tight">GoKwik</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto text-sm">
+            <div class="px-4 py-2 space-y-1">
+                <div class="flex items-center space-x-3 p-2 opacity-60"><i class="fas fa-chart-bar w-5"></i>
+                    <span>Executive Summary</span>
+                </div>
+                <div class="bg-[#1e40af] border-l-4 border-white flex items-center space-x-3 p-2 rounded-r-md">
+                    <i class="fas fa-project-diagram w-5"></i> <span>Kwik Flows</span>
+                </div>
+                <div class="flex items-center space-x-3 p-2 opacity-60"><i class="fas fa-undo w-5"></i> <span>Return
+                        Prime</span></div>
+                <div class="flex items-center space-x-3 p-2 opacity-60"><i class="fas fa-user-shield w-5"></i>
+                    <span>Admin</span>
+                </div>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-blue-900 flex items-center justify-between text-xs mt-auto">
+            <div class="flex items-center space-x-2">
+                <div class="w-7 h-7 bg-gray-500 rounded flex items-center justify-center font-bold">AA</div>
+                <span class="truncate w-24">Apoorv Abhishek</span>
+            </div>
+            <i class="fas fa-sign-out-alt opacity-50"></i>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+        <header class="h-14 bg-white border-b flex items-center justify-between px-6 flex-shrink-0">
+            <div class="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-gray-400">
+                <i class="fas fa-home"></i> <span>&gt; Workflows</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-sm text-gray-500">Switch merchant</span>
+                <div
+                    class="border rounded px-3 py-1 flex items-center space-x-2 bg-gray-50 text-sm font-semibold cursor-pointer">
+                    <div class="w-3 h-3 bg-orange-500 rounded-sm"></div>
+                    <span>PlixLife - Active</span>
+                    <i class="fas fa-chevron-down text-[10px]"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 flex overflow-hidden bg-white">
+            <main class="flex-1 overflow-y-auto relative flex flex-col items-center">
+                <div class="w-full flex justify-center py-6 border-b border-gray-100 bg-white">
+                    <div class="flex items-center space-x-24 px-6 text-sm font-medium w-full max-w-4xl justify-center">
+                        <div class="flex items-center space-x-3 text-gray-900">
+                            <div
+                                class="w-6 h-6 rounded-full bg-[#012a52] text-white flex items-center justify-center text-xs font-bold shadow-sm">
+                                1</div>
+                            <div class="flex flex-col"><span
+                                    class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Step
+                                    1</span><span class="font-bold">Segment</span></div>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-400 opacity-70">
+                            <div
+                                class="w-6 h-6 rounded-full bg-gray-100 border text-gray-500 flex items-center justify-center text-xs font-bold">
+                                2</div>
+                            <div class="flex flex-col"><span
+                                    class="text-[10px] uppercase tracking-widest font-bold">Step
+                                    2</span><span>Configure</span></div>
+                        </div>
+                        <div class="flex items-center space-x-3 text-gray-400 opacity-70">
+                            <div
+                                class="w-6 h-6 rounded-full bg-gray-100 border text-gray-500 flex items-center justify-center text-xs font-bold">
+                                3</div>
+                            <div class="flex flex-col"><span
+                                    class="text-[10px] uppercase tracking-widest font-bold">Step
+                                    3</span><span>Summary</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full max-w-5xl px-8 py-8 pb-24 flex-1">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <a href="index.html"
+                            class="w-8 h-8 rounded border flex items-center justify-center text-gray-500 bg-white hover:bg-gray-50">
+                            <i class="fas fa-chevron-left text-sm"></i>
+                        </a>
+                        <h1 class="text-2xl font-bold text-gray-900">Create Segment</h1>
+                    </div>
+
+                    <div class="bg-white border rounded-lg p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)] mb-6">
+                        <label class="block text-sm font-bold mb-2">Name your workflow</label>
+                        <input type="text" value="COD Block"
+                            class="w-full border rounded-md p-3 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    </div>
+
+                    <div class="bg-white border rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.04)] relative flex flex-col">
+                        <div class="p-6">
+                            <button class="absolute top-6 right-6 text-gray-400 hover:text-gray-600"><i
+                                    class="fas fa-trash"></i></button>
+                            <h2 class="text-lg font-bold mb-1">Segment</h2>
+                            <p class="text-sm text-gray-600 mb-6 max-w-2xl">Trigger to<br>Set conditions to target a
+                                specific customer segment and automate actions based on their attributes or behavior.
+                            </p>
+
+                            <div class="flex flex-wrap gap-3 mb-8">
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-user mb-0.5"></i><span>Customer</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-map-marker-alt mb-0.5"></i><span>Address</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-shield-alt mb-0.5"></i><span>RTO Risk</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-shopping-cart mb-0.5"></i><span>Cart</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-magic mb-0.5"></i><span>UTMs</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border rounded-md text-gray-600 px-4 py-2 text-sm bg-white font-medium hover:bg-gray-50 transition-colors">
+                                    <i class="fas fa-box mb-0.5"></i><span>SKUs</span>
+                                </button>
+                                <button
+                                    class="flex items-center space-x-2 border border-[#012a52] rounded-md text-white px-4 py-2 text-sm bg-[#012a52] font-medium relative shadow-md">
+                                    <i class="fas fa-lightbulb text-yellow-300 mb-0.5"></i><span>AI Segments</span>
+                                    <div
+                                        class="absolute -top-2.5 -right-2.5 bg-green-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white tracking-widest">
+                                        New</div>
+                                </button>
+                            </div>
+
+                            <h3 class="text-sm font-bold mb-1">Attributes</h3>
+                            <p class="text-xs text-gray-500 mb-6">Select an attribute to define your segment.</p>
+
+                            <div class="flex flex-wrap gap-x-8 gap-y-4 mb-8">
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Gender</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Discount Lovers</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Bulk Buyers</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Cross-Sell Potential</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">High-Spend Customers</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Loyalty Level</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Credit Card Users</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div
+                                        class="w-4 h-4 rounded-full border-[5px] border-[#012a52] bg-white ring-1 ring-[#012a52]">
+                                    </div><span class="text-sm text-gray-900 font-bold">Prepaid Wallet Users</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">BNPL Users</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Engagement Tier</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Preferred Payment Method</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Favorite Shopping Category</span>
+                                </label>
+                                <label class="flex items-center space-x-2.5 cursor-pointer">
+                                    <div class="w-4 h-4 rounded-full border border-gray-300"></div><span
+                                        class="text-sm text-gray-600 font-medium">Above-Average Spenders</span>
+                                </label>
+                            </div>
+
+                            <h3 class="text-sm font-bold mb-1 mt-2">Define Segment Condition</h3>
+                            <p class="text-xs text-gray-500 mb-6">Specify the rule to filter customers in this segment.
+                            </p>
+
+                            <label class="block text-sm font-bold mb-2">Match Criteria</label>
+                            <div class="relative w-full max-w-sm border rounded-md bg-white mb-6">
+                                <select
+                                    class="w-full bg-transparent p-2.5 text-sm appearance-none text-gray-800 focus:outline-none">
+                                    <option>Equal to</option>
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+
+                            <label class="block text-sm font-bold mb-2">Value</label>
+                            <div class="relative w-full max-w-sm border rounded-md bg-white">
+                                <select
+                                    class="w-full bg-transparent p-2.5 text-sm appearance-none text-gray-800 focus:outline-none">
+                                    <option>Yes/No</option>
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center mt-0">
+                        <div class="h-8 w-[1px] bg-gray-300"></div>
+                        <button
+                            class="border border-[#012a52] text-[#012a52] px-6 py-1.5 rounded-md text-xs font-bold bg-white hover:bg-gray-50 transition-colors shadow-sm">
+                            Add Condition
+                        </button>
+                    </div>
+                </div>
+
+                <div
+                    class="sticky bottom-0 w-full bg-white border-t p-3 flex justify-end shadow-[0_-4px_10px_rgba(0,0,0,0.03)] z-40">
+                    <div class="w-full max-w-5xl px-8 flex justify-end">
+                        <button
+                            class="bg-[#012a52] text-white px-8 py-2 rounded text-sm font-bold shadow-md hover:bg-[#011f3d] transition-colors">Next</button>
+                    </div>
+                </div>
+            </main>
+
+            <aside class="w-[340px] bg-white border-l flex-shrink-0 relative overflow-y-auto">
+                <div class="p-8">
+                    <h2 class="font-bold text-lg mb-4 text-gray-900 tracking-tight">About this Segment</h2>
+                    <p class="text-sm text-gray-700 mb-8 leading-relaxed">
+                        Segment prepaid cardholders (Yes/No) for wallet-specific cashback offers.
+                    </p>
+                    <h3 class="font-bold text-sm mb-4 text-gray-900">Prepaid Wallet Users (AI Segments)</h3>
+
+                    <div class="mb-8">
+                        <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-3">Segment Insights
+                        </h4>
+                        <div class="bg-white border rounded-lg shadow-sm overflow-hidden flex flex-col">
+                            <div class="overflow-x-auto scrolling-touch">
+                                <table class="w-full text-left border-collapse min-w-[440px]">
+                                    <thead>
+                                        <tr class="bg-gray-50 border-b border-gray-100">
+                                            <th
+                                                class="sticky left-0 bg-gray-50 px-3 py-2 text-[9px] font-bold text-gray-500 uppercase tracking-tight z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
+                                                Level</th>
+                                            <th
+                                                class="px-3 py-2 text-[9px] font-bold text-gray-500 uppercase tracking-tight text-right">
+                                                Base (%)</th>
+                                            <th
+                                                class="px-3 py-2 text-[9px] font-bold text-gray-500 uppercase tracking-tight text-right">
+                                                Avg AOV</th>
+                                            <th
+                                                class="px-3 py-2 text-[9px] font-bold text-gray-500 uppercase tracking-tight text-right whitespace-nowrap">
+                                                RTO %</th>
+                                            <th
+                                                class="px-3 py-2 text-[9px] font-bold text-gray-500 uppercase tracking-tight text-right whitespace-nowrap">
+                                                Conv. Rate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-50 text-[11px]">
+                                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                                            <td
+                                                class="sticky left-0 bg-white group-hover:bg-gray-50/50 px-3 py-2.5 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
+                                                <div class="flex items-center space-x-2">
+                                                    <div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                                                    <span class="font-semibold text-gray-700">High</span>
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                30% - 35%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                ₹5.4k - 6k</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-rose-600 italic whitespace-nowrap">
+                                                8% - 12%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-emerald-600 italic whitespace-nowrap">
+                                                3.4% - 4%</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                                            <td
+                                                class="sticky left-0 bg-white group-hover:bg-gray-50/50 px-3 py-2.5 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
+                                                <div class="flex items-center space-x-2">
+                                                    <div class="w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                                                    <span class="font-semibold text-gray-700">Medium</span>
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                45% - 50%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                ₹2.5k - 3k</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-rose-600 italic whitespace-nowrap">
+                                                15% - 20%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-emerald-600 italic whitespace-nowrap">
+                                                1.5% - 2%</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50/50 transition-colors group">
+                                            <td
+                                                class="sticky left-0 bg-white group-hover:bg-gray-50/50 px-3 py-2.5 z-10 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">
+                                                <div class="flex items-center space-x-2">
+                                                    <div class="w-1.5 h-1.5 rounded-full bg-orange-400"></div>
+                                                    <span class="font-semibold text-gray-700">Low</span>
+                                                </div>
+                                            </td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                20% - 25%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-gray-900 italic whitespace-nowrap">
+                                                ₹800 - 1.2k</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-rose-600 italic whitespace-nowrap">
+                                                30% - 35%</td>
+                                            <td
+                                                class="px-3 py-2.5 text-right font-bold text-emerald-600 italic whitespace-nowrap">
+                                                0.5% - 1%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="bg-gray-50 py-1 px-3 border-t border-gray-100/50 flex justify-center">
+                                <div class="flex space-x-1">
+                                    <div class="w-2 h-0.5 bg-blue-500 rounded-full"></div>
+                                    <div class="w-1 h-0.5 bg-gray-300 rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#f4f8ff] rounded-xl p-5 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-blue-500/5 rounded-bl-full -z-0"></div>
+                        <div class="flex items-center space-x-2 mb-3 relative z-10">
+                            <i class="fas fa-lightbulb text-yellow-400 text-lg drop-shadow-sm mb-0.5"></i>
+                            <span class="font-bold text-blue-600 text-[13px] tracking-wide">Pro Tips</span>
+                        </div>
+                        <ul class="list-disc pl-5 space-y-2 text-[13px] text-gray-600 relative z-10 leading-relaxed">
+                            <li>Offer 'Reload Bonus' (for instance, 'Get 10% extra on ₹500+') to prepaid card users</li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+
+            <div class="fixed bottom-6 right-6 flex flex-col items-center space-y-4 z-50">
+                <div class="relative mb-12">
+                    <button
+                        class="w-14 h-14 bg-[#1B63F2] text-white rounded-full shadow-[0_4px_16px_rgba(27,99,242,0.4)] flex items-center justify-center hover:bg-blue-600 transition-all border-2 border-[#1B63F2] ring-2 ring-purple-600 hover:scale-105 group absolute bottom-0 right-0">
+                        <i class="far fa-comment-dots text-2xl group-hover:scale-110 transition-transform"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="fixed bottom-6 right-28 z-50">
+                <button
+                    class="bg-[#1e2433] hover:bg-[#141822] transition-colors text-white px-5 py-2 rounded-full text-xs font-bold shadow-lg flex items-center space-x-2">
+                    <i class="far fa-question-circle text-lg"></i><span>Help</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoKwik - Edit Klotho Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-[#f4f7f9] flex h-screen overflow-hidden text-gray-800">
+
+    <aside class="w-64 bg-[#012a52] text-white flex flex-col flex-shrink-0 relative z-50">
+        <div class="p-6 flex items-center space-x-2">
+            <div class="bg-orange-500 p-1 rounded"><i class="fas fa-bolt text-white"></i></div>
+            <span class="text-xl font-bold tracking-tight">GoKwik</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto text-sm">
+            <div class="px-4 py-2 space-y-1">
+                <div class="flex items-center space-x-3 p-2 opacity-60"><i class="fas fa-chart-bar w-5"></i>
+                    <span>Executive Summary</span>
+                </div>
+                <div class="bg-[#1e40af] border-l-4 border-white flex items-center space-x-3 p-2 rounded-r-md">
+                    <i class="fas fa-project-diagram w-5"></i> <span>Kwik Flows</span>
+                </div>
+                <div class="flex items-center space-x-3 p-2 opacity-60"><i class="fas fa-undo w-5"></i> <span>Return
+                        Prime</span></div>
+                <div class="flex items-center space-x-3 p-2 opacity-60"><i class="fas fa-user-shield w-5"></i>
+                    <span>Admin</span>
+                </div>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-blue-900 flex items-center justify-between text-xs mt-auto">
+            <div class="flex items-center space-x-2">
+                <div class="w-7 h-7 bg-gray-500 rounded flex items-center justify-center font-bold">AA</div>
+                <span class="truncate w-24">Apoorv Abhishek</span>
+            </div>
+            <i class="fas fa-sign-out-alt opacity-50"></i>
+        </div>
+    </aside>
+
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4">
+            <div class="p-6 border-b">
+                <h3 class="text-lg font-bold text-gray-900">Unsaved Changes</h3>
+            </div>
+            <div class="p-6">
+                <p class="text-sm text-gray-600">You have unsaved changes. Are you sure you want to go back? Your
+                    changes will be lost.</p>
+            </div>
+            <div class="p-6 border-t flex justify-end space-x-3">
+                <button onclick="cancelLeave()"
+                    class="px-4 py-2 border border-gray-300 rounded text-sm font-bold text-gray-700 hover:bg-gray-50">
+                    Stay on Page
+                </button>
+                <button onclick="confirmLeave()"
+                    class="px-4 py-2 bg-[#012a52] text-white rounded text-sm font-bold hover:bg-[#011f3d]">
+                    Discard Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+        <header class="h-14 bg-white border-b flex items-center justify-between px-6 flex-shrink-0">
+            <div class="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-gray-400">
+                <i class="fas fa-home"></i> <span>&gt; Workflows</span>
+                <span>&gt; Klotho Intelligence</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-sm text-gray-500">Switch merchant</span>
+                <div
+                    class="border rounded px-3 py-1 flex items-center space-x-2 bg-gray-50 text-sm font-semibold cursor-pointer">
+                    <div class="w-3 h-3 bg-orange-500 rounded-sm"></div>
+                    <span>PlixLife - Active</span>
+                    <i class="fas fa-chevron-down text-[10px]"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 flex overflow-hidden">
+            <main class="flex-1 overflow-y-auto p-8">
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <a href="index.html"
+                            class="w-8 h-8 rounded-full border flex items-center justify-center text-gray-500 bg-white hover:bg-gray-50">
+                            <i class="fas fa-chevron-left text-xs"></i>
+                        </a>
+                        <h1 class="text-xl font-bold">Edit Klotho Intelligence</h1>
+                        <div class="flex items-center space-x-2 bg-gray-100 p-1.5 rounded-full px-3">
+                            <span class="text-[10px] font-bold uppercase text-gray-500">Status</span>
+                            <div id="status-toggle" data-toggle="true" onclick="toggleStatus()"
+                                class="w-10 h-5 bg-purple-600 rounded-full relative cursor-pointer">
+                                <div id="status-ball"
+                                    class="absolute right-1 top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border rounded-lg p-4 shadow-sm">
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1">Workflow Name</label>
+                        <input type="text" value="Klotho Intelligence High Risk Logic"
+                            class="w-full text-sm font-medium bg-transparent" readonly>
+                    </div>
+
+                    <div
+                        class="bg-white border rounded-xl shadow-sm overflow-hidden border-l-4 border-purple-600 items-center">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-lg font-bold">High COD RTO Behavior</h3>
+                                <div id="rule-1-toggle" data-toggle="true"
+                                    onclick="toggleGeneric('rule-1-toggle', 'rule-1-ball')"
+                                    class="w-10 h-5 bg-purple-600 rounded-full relative cursor-pointer">
+                                    <div id="rule-1-ball"
+                                        class="absolute right-1 top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1 italic mb-6">Identify customers exhibiting consistently
+                                high RTO rates across the GoKwik network.</p>
+                            <div class="grid grid-cols-3 gap-6">
+                                <div class="space-y-1"><label class="text-[10px] font-bold text-gray-400 uppercase">Min
+                                        RTO</label><input type="number" value="2"
+                                        class="w-full border rounded p-2 text-sm"></div>
+                                <div class="space-y-1"><label class="text-[10px] font-bold text-gray-400 uppercase">Min
+                                        COD</label><input type="number" value="3"
+                                        class="w-full border rounded p-2 text-sm"></div>
+                                <div class="space-y-1"><label
+                                        class="text-[10px] font-bold text-gray-400 uppercase">Cut-off %</label><input
+                                        type="number" value="70" class="w-full border rounded p-2 text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center relative py-6">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="h-full w-[2px] bg-gray-200"></div>
+                        </div>
+                        <div
+                            class="relative z-10 bg-white border rounded-full px-4 py-1 text-[10px] font-bold text-gray-400">
+                            OR</div>
+                    </div>
+
+                    <div class="bg-white border rounded-xl shadow-sm overflow-hidden border-l-4 border-purple-600">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-lg font-bold">Order Velocity</h3>
+                                <div id="rule-2-toggle" data-toggle="true"
+                                    onclick="toggleGeneric('rule-2-toggle', 'rule-2-ball')"
+                                    class="w-10 h-5 bg-purple-600 rounded-full relative cursor-pointer">
+                                    <div id="rule-2-ball"
+                                        class="absolute right-1 top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1 italic mb-6">Detect high short-term activity.</p>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="space-y-1"><label
+                                        class="text-[10px] font-bold text-gray-400 uppercase">Window (hrs)</label><input
+                                        type="number" value="72" class="w-full border rounded p-2 text-sm"></div>
+                                <div class="space-y-1"><label
+                                        class="text-[10px] font-bold text-gray-400 uppercase">Threshold</label><input
+                                        type="number" value="2" class="w-full border rounded p-2 text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center relative py-6">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="h-full w-[2px] bg-gray-200"></div>
+                        </div>
+                        <div
+                            class="relative z-10 bg-white border rounded-full px-4 py-1 text-[10px] font-bold text-gray-400">
+                            OR</div>
+                    </div>
+
+                    <div class="bg-white border rounded-xl shadow-sm overflow-hidden border-l-4 border-purple-600">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-lg font-bold">High Cart Value</h3>
+                                <div id="rule-3-toggle" data-toggle="true"
+                                    onclick="toggleGeneric('rule-3-toggle', 'rule-3-ball')"
+                                    class="w-10 h-5 bg-purple-600 rounded-full relative cursor-pointer">
+                                    <div id="rule-3-ball"
+                                        class="absolute right-1 top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1 italic mb-6">Automatically flag high-value orders for
+                                enhanced risk management.</p>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="space-y-1"><label class="text-[10px] font-bold text-gray-400 uppercase">Cart
+                                        Value Cut-off</label><input type="number" value="4000"
+                                        class="w-full border rounded p-2 text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center relative py-6">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="h-full w-[2px] bg-gray-200"></div>
+                        </div>
+                        <div
+                            class="relative z-10 bg-white border rounded-full px-4 py-1 text-[10px] font-bold text-gray-400">
+                            OR</div>
+                    </div>
+
+                    <div class="bg-white border rounded-xl shadow-sm overflow-hidden border-l-4 border-purple-600">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="text-lg font-bold">Blocked Keywords</h3>
+                                <div id="rule-4-toggle" data-toggle="true"
+                                    onclick="toggleGeneric('rule-4-toggle', 'rule-4-ball')"
+                                    class="w-10 h-5 bg-purple-600 rounded-full relative cursor-pointer">
+                                    <div id="rule-4-ball"
+                                        class="absolute right-1 top-0.5 w-4 h-4 bg-white rounded-full shadow-md transition-all">
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1 italic mb-6">Prevents entry of dummy or evidently
+                                fraudulent customer details. Checked across Customer Name &amp; Address fields</p>
+                            <div class="grid grid-cols-2 gap-6">
+                                <div class="space-y-1"><label
+                                        class="text-[10px] font-bold text-gray-400 uppercase">Blocked
+                                        strings</label><input type="text" value="test,dummy,fake"
+                                        class="w-full border rounded p-2 text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="fixed bottom-0 right-0 left-64 bg-white border-t p-4 flex justify-end shadow-[0_-4px_10px_rgba(0,0,0,0.05)] z-40">
+                    <button id="save-btn" disabled
+                        class="bg-[#012a52] text-white px-10 py-2.5 rounded font-bold text-sm shadow-lg opacity-50 cursor-not-allowed transition-all">
+                        Save Configuration
+                    </button>
+                </div>
+            </main>
+
+            <aside class="w-80 bg-white border-l p-6 flex-shrink-0">
+                <h4 class="font-bold text-sm mb-4">About Klotho</h4>
+                <p class="text-xs text-gray-500 mb-6 leading-relaxed">
+                    Klotho Rules allow you to tailor risk detection to mark a customer as High Risk based on your
+                    specific business rules and needs. By defining these custom parameters, you can ensure your risk
+                    management strategy is perfectly aligned with your operational requirements.
+                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded text-[11px] text-gray-600">
+                    <div class="font-bold text-blue-600 mb-2 uppercase">Pro Tips</div>
+                    <ul class="space-y-2 list-disc pl-3">
+                        <li>Maintain a high cut-off to avoid false positives.</li>
+                        <li>Velocity helps prevent bot attacks.</li>
+                        <li>Cart Value is recommended to be 4x your AOV. In case AOV is increasing then this value needs
+                            to be updated.</li>
+                        <li>Place test orders using blocked keywords</li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        let initialState = {
+            inputs: new Map(),
+            toggles: new Map()
+        };
+
+        function toggleStatus() {
+            toggleGeneric('status-toggle', 'status-ball');
+        }
+
+        function toggleGeneric(toggleId, ballId) {
+            const toggle = document.getElementById(toggleId);
+            const ball = document.getElementById(ballId);
+            if (toggle.classList.contains('bg-purple-600')) {
+                toggle.classList.replace('bg-purple-600', 'bg-gray-300');
+                ball.classList.replace('right-1', 'left-1');
+            } else {
+                toggle.classList.replace('bg-gray-300', 'bg-purple-600');
+                ball.classList.replace('left-1', 'right-1');
+            }
+            updateSaveState();
+        }
+
+        function getToggleState(toggle) {
+            return toggle.classList.contains('bg-purple-600');
+        }
+
+        function captureInitialState() {
+            initialState.inputs.clear();
+            initialState.toggles.clear();
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                initialState.inputs.set(input, input.value);
+            });
+            const toggles = document.querySelectorAll('[data-toggle="true"]');
+            toggles.forEach(toggle => {
+                initialState.toggles.set(toggle, getToggleState(toggle));
+            });
+            updateSaveState();
+        }
+
+        function isDirty() {
+            for (const [input, value] of initialState.inputs.entries()) {
+                if (input.value !== value) {
+                    return true;
+                }
+            }
+            for (const [toggle, value] of initialState.toggles.entries()) {
+                if (getToggleState(toggle) !== value) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function enableSave() {
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.disabled = false;
+            saveBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        function disableSave() {
+            const saveBtn = document.getElementById('save-btn');
+            saveBtn.disabled = true;
+            saveBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        function updateSaveState() {
+            if (isDirty()) {
+                enableSave();
+            } else {
+                disableSave();
+            }
+        }
+
+        function confirmLeave() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            window.location.href = 'index.html';
+        }
+
+        function cancelLeave() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            captureInitialState();
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('input', updateSaveState);
+            });
+
+            const backButton = document.querySelector('a[href="index.html"]');
+            if (backButton) {
+                backButton.addEventListener('click', (e) => {
+                    if (isDirty()) {
+                        e.preventDefault();
+                        document.getElementById('confirm-modal').classList.remove('hidden');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
