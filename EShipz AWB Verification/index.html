@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EShipz AWB Verification Tool</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f7fa; color: #1a1a2e; min-height: 100vh; }
+
+  .header { background: #004b8d; color: #fff; padding: 20px 32px; }
+  .header h1 { font-size: 22px; font-weight: 600; }
+  .header p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+  .card { background: #fff; border-radius: 8px; border: 1px solid #e2e8f0; padding: 24px; margin-bottom: 20px; }
+  .card h2 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #004b8d; }
+
+  .info-box { background: #eef4fb; border-left: 4px solid #004b8d; padding: 14px 16px; border-radius: 4px; font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+  .info-box ol { margin: 8px 0 0 18px; }
+
+  .upload-zone { border: 2px dashed #cbd5e1; border-radius: 8px; padding: 32px 16px; text-align: center; cursor: pointer; transition: all 0.2s; }
+  .upload-zone:hover, .upload-zone.dragover { border-color: #004b8d; background: #f0f6ff; }
+  .upload-zone input { display: none; }
+  .upload-zone p { font-size: 14px; color: #64748b; }
+  .upload-zone .icon { font-size: 28px; margin-bottom: 8px; }
+  .upload-zone .browse { color: #004b8d; font-weight: 600; text-decoration: underline; cursor: pointer; }
+
+  .file-list { margin-top: 12px; }
+  .file-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: #f8fafc; border-radius: 6px; margin-bottom: 6px; font-size: 13px; }
+  .file-item .name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .file-item .size { color: #94a3b8; margin: 0 12px; white-space: nowrap; }
+  .file-item .remove { color: #ef4444; cursor: pointer; font-weight: 600; padding: 2px 6px; border-radius: 4px; }
+  .file-item .remove:hover { background: #fef2f2; }
+
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .btn-primary { background: #004b8d; color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: #003a6e; }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-success { background: #16a34a; color: #fff; }
+  .btn-success:hover { background: #15803d; }
+  .btn-outline { background: #fff; color: #004b8d; border: 1.5px solid #004b8d; }
+  .btn-outline:hover { background: #f0f6ff; }
+
+  .actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+
+  .results { display: none; }
+  .results.visible { display: block; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .stat-card { background: #f8fafc; border-radius: 8px; padding: 20px; text-align: center; border: 1px solid #e2e8f0; }
+  .stat-card .value { font-size: 32px; font-weight: 700; color: #004b8d; }
+  .stat-card .label { font-size: 13px; color: #64748b; margin-top: 4px; }
+  .stat-card.highlight { background: #eef4fb; border-color: #004b8d; }
+  .stat-card.highlight .value { color: #16a34a; }
+
+  .preview-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 12px; max-height: 300px; overflow-y: auto; display: block; }
+  .preview-table thead { position: sticky; top: 0; }
+  .preview-table th { background: #f1f5f9; padding: 8px 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
+  .preview-table td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; }
+  .preview-table tr:hover td { background: #f8fafc; }
+
+  .status { padding: 12px 16px; border-radius: 6px; font-size: 13px; margin-top: 12px; }
+  .status.processing { background: #fef9c3; border: 1px solid #fde047; color: #854d0e; }
+  .status.error { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+  .status.success { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+
+  .progress-bar { width: 100%; height: 8px; background: #e2e8f0; border-radius: 4px; margin-top: 8px; overflow: hidden; }
+  .progress-bar .fill { height: 100%; background: #004b8d; border-radius: 4px; transition: width 0.3s; }
+
+  .section-divider { border: none; border-top: 1px solid #e2e8f0; margin: 4px 0 16px; }
+
+  .tab-bar { display: flex; gap: 0; border-bottom: 2px solid #e2e8f0; margin-bottom: 16px; }
+  .tab { padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; color: #64748b; transition: all 0.15s; }
+  .tab:hover { color: #004b8d; }
+  .tab.active { color: #004b8d; border-bottom-color: #004b8d; }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .badge { display: inline-block; background: #004b8d; color: #fff; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; margin-left: 6px; }
+
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .actions { flex-direction: column; }
+    .btn { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>EShipz AWB Verification Tool</h1>
+  <p>Compare AWB numbers from EShipz and GoKwik Metabase exports</p>
+</div>
+
+<div class="container">
+
+  <!-- Step 1: Metabase CSVs -->
+  <div class="card">
+    <h2>Step 1 &mdash; Upload Metabase CSV Files</h2>
+    <div class="info-box">
+      <strong>How to download from Metabase:</strong>
+      <ol>
+        <li>Open the <a href="https://internal-stats.gokwik.in/question/5650-eshipz-awbs" target="_blank">EShipz AWBs query</a> in Metabase</li>
+        <li>Download Page 1 as CSV</li>
+        <li>Increment the page number in the URL and download each page</li>
+        <li>Repeat until a page returns <strong>0 rows</strong></li>
+        <li>Upload all downloaded CSVs below</li>
+      </ol>
+    </div>
+    <div class="upload-zone" id="metabaseZone">
+      <div class="icon">&#128196;</div>
+      <p>Drag &amp; drop CSV files here, or <span class="browse">browse</span></p>
+      <p style="font-size:12px;color:#94a3b8;margin-top:4px;">Accepts .csv files</p>
+      <input type="file" id="metabaseInput" multiple accept=".csv">
+    </div>
+    <div class="file-list" id="metabaseFileList"></div>
+  </div>
+
+  <!-- Step 2: EShipz Excel -->
+  <div class="card">
+    <h2>Step 2 &mdash; Upload EShipz Excel Files</h2>
+    <div class="upload-zone" id="eshipzZone">
+      <div class="icon">&#128202;</div>
+      <p>Drag &amp; drop Excel files here, or <span class="browse">browse</span></p>
+      <p style="font-size:12px;color:#94a3b8;margin-top:4px;">Accepts .xlsx, .xls files</p>
+      <input type="file" id="eshipzInput" multiple accept=".xlsx,.xls">
+    </div>
+    <div class="file-list" id="eshipzFileList"></div>
+  </div>
+
+  <!-- Actions -->
+  <div class="card">
+    <h2>Step 3 &mdash; Compare AWBs</h2>
+    <div class="actions">
+      <button class="btn btn-primary" id="compareBtn" disabled>Compare AWBs</button>
+      <button class="btn btn-outline" id="resetBtn">Reset All</button>
+    </div>
+    <div id="statusArea"></div>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="resultsSection">
+    <div class="card">
+      <h2>Results</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="value" id="statMetabase">0</div>
+          <div class="label">Unique AWBs in Metabase</div>
+        </div>
+        <div class="stat-card">
+          <div class="value" id="statEshipz">0</div>
+          <div class="label">Unique AWBs in EShipz</div>
+        </div>
+        <div class="stat-card highlight">
+          <div class="value" id="statCommon">0</div>
+          <div class="label">Common AWBs</div>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="value" id="statOnlyMetabase">0</div>
+          <div class="label">Only in Metabase</div>
+        </div>
+        <div class="stat-card">
+          <div class="value" id="statOnlyEshipz">0</div>
+          <div class="label">Only in EShipz</div>
+        </div>
+      </div>
+
+      <div class="tab-bar">
+        <div class="tab active" data-tab="common">Common AWBs <span class="badge" id="badgeCommon">0</span></div>
+        <div class="tab" data-tab="onlyMetabase">Only in Metabase <span class="badge" id="badgeOnlyMetabase">0</span></div>
+        <div class="tab" data-tab="onlyEshipz">Only in EShipz <span class="badge" id="badgeOnlyEshipz">0</span></div>
+      </div>
+
+      <div class="tab-content active" id="tab-common">
+        <table class="preview-table" id="commonTable">
+          <thead><tr><th>#</th><th>AWB Number</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="tab-content" id="tab-onlyMetabase">
+        <table class="preview-table" id="onlyMetabaseTable">
+          <thead><tr><th>#</th><th>AWB Number</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="tab-content" id="tab-onlyEshipz">
+        <table class="preview-table" id="onlyEshipzTable">
+          <thead><tr><th>#</th><th>AWB Number</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <hr class="section-divider" style="margin-top:16px;">
+      <div class="actions" style="margin-top:12px;">
+        <button class="btn btn-success" id="downloadCommon">Download Common AWBs</button>
+        <button class="btn btn-outline" id="downloadOnlyMetabase">Download Only-in-Metabase</button>
+        <button class="btn btn-outline" id="downloadOnlyEshipz">Download Only-in-EShipz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     Web Worker: runs in a separate thread so the UI never freezes.
+     All heavy file parsing + Set comparison happens here.
+     ============================================================ -->
+<script id="worker-code" type="text/worker">
+importScripts('https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js');
+
+// --- AWB column detection ---
+const AWB_PATTERNS = [
+  /^awb$/i, /^awb[_ ]?no$/i, /^awb[_ ]?number$/i, /^awb[_ ]?num$/i,
+  /^airway[_ ]?bill$/i, /^airway[_ ]?bill[_ ]?no$/i, /^airway[_ ]?bill[_ ]?number$/i,
+  /^tracking[_ ]?number$/i, /^tracking[_ ]?no$/i, /^tracking[_ ]?id$/i,
+  /^waybill$/i, /^waybill[_ ]?number$/i,
+  /awb/i
+];
+
+function findAwbColumn(headers) {
+  for (const pattern of AWB_PATTERNS) {
+    for (const h of headers) {
+      if (pattern.test(h.trim())) return h;
+    }
+  }
+  return null;
+}
+
+function normalizeAwb(val) {
+  if (val == null) return '';
+  return String(val).trim().replace(/\\.0+$/, '');
+}
+
+// --- Streaming CSV parser: extracts only the AWB column index, yields values ---
+function extractAwbsFromCSVText(text) {
+  const awbs = [];
+  // Find the first newline to get the header row
+  let headerEnd = text.indexOf('\n');
+  if (headerEnd === -1) return { awbs: [], error: 'no data rows' };
+  let headerLine = text.substring(0, headerEnd).replace(/\r$/, '');
+
+  // Parse header (handle quoted headers)
+  const headers = parseCSVRow(headerLine);
+  const awbCol = findAwbColumn(headers);
+  if (!awbCol) return { awbs: [], error: 'no AWB column found (columns: ' + headers.join(', ') + ')' };
+  const colIdx = headers.indexOf(awbCol);
+
+  // Parse row by row from the rest of the text
+  let pos = headerEnd + 1;
+  let rowCount = 0;
+  while (pos < text.length) {
+    // Find end of current row (respecting quotes)
+    let rowEnd = findRowEnd(text, pos);
+    let rowText = text.substring(pos, rowEnd).replace(/\r$/, '');
+    pos = rowEnd + 1;
+
+    if (rowText.length === 0) continue;
+
+    // Fast path: if colIdx is 0 and no quotes, just grab up to first comma
+    let val;
+    if (colIdx === 0 && rowText[0] !== '"') {
+      let commaPos = rowText.indexOf(',');
+      val = commaPos === -1 ? rowText : rowText.substring(0, commaPos);
+    } else {
+      // Need to parse columns up to colIdx
+      val = extractColumnFromRow(rowText, colIdx);
+    }
+
+    val = normalizeAwb(val);
+    if (val) awbs.push(val);
+    rowCount++;
+  }
+
+  return { awbs, error: null, rowCount };
+}
+
+function parseCSVRow(line) {
+  const fields = [];
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (i + 1 < line.length && line[i + 1] === '"') { field += '"'; i++; }
+        else inQuotes = false;
+      } else { field += ch; }
+    } else {
+      if (ch === '"') inQuotes = true;
+      else if (ch === ',') { fields.push(field); field = ''; }
+      else field += ch;
+    }
+  }
+  fields.push(field);
+  return fields;
+}
+
+function findRowEnd(text, start) {
+  let inQuotes = false;
+  for (let i = start; i < text.length; i++) {
+    if (text[i] === '"') inQuotes = !inQuotes;
+    else if (text[i] === '\n' && !inQuotes) return i;
+  }
+  return text.length;
+}
+
+function extractColumnFromRow(rowText, targetIdx) {
+  let fieldIdx = 0;
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < rowText.length; i++) {
+    const ch = rowText[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (i + 1 < rowText.length && rowText[i + 1] === '"') { field += '"'; i++; }
+        else inQuotes = false;
+      } else { field += ch; }
+    } else {
+      if (ch === '"') inQuotes = true;
+      else if (ch === ',') {
+        if (fieldIdx === targetIdx) return field;
+        fieldIdx++;
+        field = '';
+      } else field += ch;
+    }
+  }
+  return fieldIdx === targetIdx ? field : '';
+}
+
+// --- Extract AWBs from Excel ArrayBuffer: process one sheet at a time, extract only AWB column ---
+function extractAwbsFromExcelBuffer(buffer, fileName) {
+  const awbs = [];
+  const errors = [];
+
+  // Parse workbook — use dense mode (array of arrays) to reduce memory vs object mode
+  const wb = XLSX.read(buffer, { type: 'array', dense: true });
+  let foundAny = false;
+
+  for (const sheetName of wb.SheetNames) {
+    const sheet = wb.Sheets[sheetName];
+    if (!sheet || !sheet['!data'] || sheet['!data'].length < 2) continue;
+
+    const data = sheet['!data'];
+    // Get headers from first row
+    const headerRow = data[0];
+    if (!headerRow) continue;
+
+    const headers = headerRow.map(cell => cell ? String(cell.v != null ? cell.v : '') : '');
+    const awbCol = findAwbColumn(headers);
+    if (!awbCol) continue;
+    foundAny = true;
+    const colIdx = headers.indexOf(awbCol);
+
+    // Extract only AWB column from each data row
+    for (let r = 1; r < data.length; r++) {
+      const row = data[r];
+      if (!row || !row[colIdx]) continue;
+      const cellVal = row[colIdx].v;
+      const val = normalizeAwb(cellVal);
+      if (val) awbs.push(val);
+    }
+
+    // Release sheet data to free memory
+    delete wb.Sheets[sheetName];
+  }
+
+  if (!foundAny) errors.push(fileName + ': no AWB column found in any sheet');
+  return { awbs, errors };
+}
+
+// --- Main message handler ---
+self.onmessage = function(e) {
+  const { type, files } = e.data;
+
+  if (type === 'processAll') {
+    const metabaseAwbSet = new Set();
+    const eshipzAwbSet = new Set();
+    const allErrors = [];
+    const totalFiles = files.metabase.length + files.eshipz.length;
+    let processedFiles = 0;
+
+    // Process Metabase CSV files one at a time
+    for (let i = 0; i < files.metabase.length; i++) {
+      const f = files.metabase[i];
+      self.postMessage({
+        type: 'progress',
+        message: 'Processing Metabase CSV: ' + f.name + ' (' + (i + 1) + '/' + files.metabase.length + ')',
+        percent: Math.round((processedFiles / totalFiles) * 100)
+      });
+
+      try {
+        // Decode ArrayBuffer to string
+        const decoder = new TextDecoder('utf-8');
+        const text = decoder.decode(f.buffer);
+        const result = extractAwbsFromCSVText(text);
+        if (result.error) {
+          allErrors.push(f.name + ': ' + result.error);
+        } else {
+          for (const awb of result.awbs) metabaseAwbSet.add(awb);
+        }
+      } catch (err) {
+        allErrors.push(f.name + ': ' + err.message);
+      }
+
+      processedFiles++;
+    }
+
+    // Process EShipz Excel files one at a time
+    for (let i = 0; i < files.eshipz.length; i++) {
+      const f = files.eshipz[i];
+      self.postMessage({
+        type: 'progress',
+        message: 'Processing EShipz Excel: ' + f.name + ' (' + (i + 1) + '/' + files.eshipz.length + ') — this may take a moment for large files',
+        percent: Math.round((processedFiles / totalFiles) * 100)
+      });
+
+      try {
+        const result = extractAwbsFromExcelBuffer(f.buffer, f.name);
+        for (const awb of result.awbs) eshipzAwbSet.add(awb);
+        allErrors.push(...result.errors);
+      } catch (err) {
+        allErrors.push(f.name + ': ' + err.message);
+      }
+
+      processedFiles++;
+    }
+
+    // Compare
+    self.postMessage({ type: 'progress', message: 'Comparing AWB sets...', percent: 90 });
+
+    const common = [];
+    const onlyMetabase = [];
+    for (const awb of metabaseAwbSet) {
+      if (eshipzAwbSet.has(awb)) common.push(awb);
+      else onlyMetabase.push(awb);
+    }
+    const onlyEshipz = [];
+    for (const awb of eshipzAwbSet) {
+      if (!metabaseAwbSet.has(awb)) onlyEshipz.push(awb);
+    }
+
+    common.sort();
+    onlyMetabase.sort();
+    onlyEshipz.sort();
+
+    self.postMessage({
+      type: 'result',
+      metabaseCount: metabaseAwbSet.size,
+      eshipzCount: eshipzAwbSet.size,
+      common,
+      onlyMetabase,
+      onlyEshipz,
+      errors: allErrors
+    });
+  }
+};
+</script>
+
+<script>
+(function () {
+  // State
+  let metabaseFiles = [];
+  let eshipzFiles = [];
+  let resultData = { common: [], onlyMetabase: [], onlyEshipz: [] };
+  let worker = null;
+
+  // DOM refs
+  const metabaseZone = document.getElementById('metabaseZone');
+  const metabaseInput = document.getElementById('metabaseInput');
+  const metabaseFileList = document.getElementById('metabaseFileList');
+  const eshipzZone = document.getElementById('eshipzZone');
+  const eshipzInput = document.getElementById('eshipzInput');
+  const eshipzFileList = document.getElementById('eshipzFileList');
+  const compareBtn = document.getElementById('compareBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const statusArea = document.getElementById('statusArea');
+  const resultsSection = document.getElementById('resultsSection');
+
+  // --- Create Web Worker from inline script ---
+  function createWorker() {
+    const code = document.getElementById('worker-code').textContent;
+    const blob = new Blob([code], { type: 'application/javascript' });
+    return new Worker(URL.createObjectURL(blob));
+  }
+
+  // --- Upload zone wiring ---
+  function wireUploadZone(zone, input, addFilesFn) {
+    zone.addEventListener('click', () => input.click());
+    input.addEventListener('change', () => { addFilesFn(Array.from(input.files)); input.value = ''; });
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('dragover');
+      addFilesFn(Array.from(e.dataTransfer.files));
+    });
+  }
+
+  function addMetabaseFiles(files) {
+    const csvFiles = files.filter(f => f.name.toLowerCase().endsWith('.csv'));
+    if (csvFiles.length < files.length) showStatus('Some non-CSV files were skipped.', 'error');
+    metabaseFiles.push(...csvFiles);
+    renderFileList(metabaseFileList, metabaseFiles, f => { metabaseFiles = metabaseFiles.filter(x => x !== f); renderFileList(metabaseFileList, metabaseFiles, addMetabaseRemover); updateCompareBtn(); });
+    updateCompareBtn();
+  }
+
+  function addEshipzFiles(files) {
+    const xlFiles = files.filter(f => /\.(xlsx|xls)$/i.test(f.name));
+    if (xlFiles.length < files.length) showStatus('Some non-Excel files were skipped.', 'error');
+    eshipzFiles.push(...xlFiles);
+    renderFileList(eshipzFileList, eshipzFiles, f => { eshipzFiles = eshipzFiles.filter(x => x !== f); renderFileList(eshipzFileList, eshipzFiles, addEshipzRemover); updateCompareBtn(); });
+    updateCompareBtn();
+  }
+
+  function addMetabaseRemover(f) { metabaseFiles = metabaseFiles.filter(x => x !== f); renderFileList(metabaseFileList, metabaseFiles, addMetabaseRemover); updateCompareBtn(); }
+  function addEshipzRemover(f) { eshipzFiles = eshipzFiles.filter(x => x !== f); renderFileList(eshipzFileList, eshipzFiles, addEshipzRemover); updateCompareBtn(); }
+
+  wireUploadZone(metabaseZone, metabaseInput, addMetabaseFiles);
+  wireUploadZone(eshipzZone, eshipzInput, addEshipzFiles);
+
+  // --- File list rendering ---
+  function renderFileList(container, files, removeFn) {
+    container.innerHTML = '';
+    files.forEach((f) => {
+      const div = document.createElement('div');
+      div.className = 'file-item';
+      div.innerHTML = '<span class="name">' + escapeHtml(f.name) + '</span><span class="size">' + formatSize(f.size) + '</span><span class="remove" title="Remove">&times;</span>';
+      div.querySelector('.remove').addEventListener('click', () => removeFn(f));
+      container.appendChild(div);
+    });
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / 1048576).toFixed(1) + ' MB';
+  }
+
+  function updateCompareBtn() {
+    compareBtn.disabled = !(metabaseFiles.length > 0 && eshipzFiles.length > 0);
+  }
+
+  // --- Status display ---
+  function showStatus(msg, type) {
+    statusArea.innerHTML = '<div class="status ' + type + '">' + msg + '</div>';
+  }
+
+  function showProgress(msg, percent) {
+    statusArea.innerHTML =
+      '<div class="status processing">' + escapeHtml(msg) +
+      '<div class="progress-bar"><div class="fill" style="width:' + percent + '%"></div></div></div>';
+  }
+
+  function clearStatus() { statusArea.innerHTML = ''; }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  // --- Read file as ArrayBuffer (returns a promise) ---
+  function readFileAsArrayBuffer(file) {
+    return new Promise(function(resolve, reject) {
+      const reader = new FileReader();
+      reader.onload = function() { resolve(reader.result); };
+      reader.onerror = reject;
+      reader.readAsArrayBuffer(file);
+    });
+  }
+
+  // --- Comparison (via Web Worker) ---
+  compareBtn.addEventListener('click', async function() {
+    clearStatus();
+    resultsSection.classList.remove('visible');
+    showProgress('Reading files into memory...', 0);
+    compareBtn.disabled = true;
+    resetBtn.disabled = true;
+
+    try {
+      // Read all files into ArrayBuffers on the main thread, then transfer to worker
+      const metaBuffers = [];
+      for (let i = 0; i < metabaseFiles.length; i++) {
+        showProgress('Reading Metabase CSV ' + (i + 1) + '/' + metabaseFiles.length + ': ' + metabaseFiles[i].name, Math.round(((i) / (metabaseFiles.length + eshipzFiles.length)) * 30));
+        const buf = await readFileAsArrayBuffer(metabaseFiles[i]);
+        metaBuffers.push({ name: metabaseFiles[i].name, buffer: buf });
+      }
+
+      const eshipzBuffers = [];
+      for (let i = 0; i < eshipzFiles.length; i++) {
+        showProgress('Reading EShipz Excel ' + (i + 1) + '/' + eshipzFiles.length + ': ' + eshipzFiles[i].name + ' (' + formatSize(eshipzFiles[i].size) + ')', Math.round(((metabaseFiles.length + i) / (metabaseFiles.length + eshipzFiles.length)) * 30));
+        const buf = await readFileAsArrayBuffer(eshipzFiles[i]);
+        eshipzBuffers.push({ name: eshipzFiles[i].name, buffer: buf });
+      }
+
+      showProgress('Starting worker — parsing files off the main thread...', 30);
+
+      // Create worker and send data
+      if (worker) worker.terminate();
+      worker = createWorker();
+
+      worker.onmessage = function(e) {
+        const msg = e.data;
+        if (msg.type === 'progress') {
+          showProgress(msg.message, 30 + Math.round(msg.percent * 0.7));
+        } else if (msg.type === 'result') {
+          displayResults(msg);
+          worker.terminate();
+          worker = null;
+          resetBtn.disabled = false;
+          updateCompareBtn();
+        }
+      };
+
+      worker.onerror = function(err) {
+        showStatus('Worker error: ' + err.message, 'error');
+        resetBtn.disabled = false;
+        updateCompareBtn();
+      };
+
+      // Transfer ArrayBuffers to avoid copying
+      const transferables = [
+        ...metaBuffers.map(f => f.buffer),
+        ...eshipzBuffers.map(f => f.buffer)
+      ];
+
+      worker.postMessage({
+        type: 'processAll',
+        files: { metabase: metaBuffers, eshipz: eshipzBuffers }
+      }, transferables);
+
+    } catch (err) {
+      showStatus('Error reading files: ' + err.message, 'error');
+      resetBtn.disabled = false;
+      updateCompareBtn();
+    }
+  });
+
+  // --- Display results ---
+  function displayResults(msg) {
+    resultData = { common: msg.common, onlyMetabase: msg.onlyMetabase, onlyEshipz: msg.onlyEshipz };
+
+    document.getElementById('statMetabase').textContent = msg.metabaseCount.toLocaleString();
+    document.getElementById('statEshipz').textContent = msg.eshipzCount.toLocaleString();
+    document.getElementById('statCommon').textContent = msg.common.length.toLocaleString();
+    document.getElementById('statOnlyMetabase').textContent = msg.onlyMetabase.length.toLocaleString();
+    document.getElementById('statOnlyEshipz').textContent = msg.onlyEshipz.length.toLocaleString();
+
+    document.getElementById('badgeCommon').textContent = msg.common.length.toLocaleString();
+    document.getElementById('badgeOnlyMetabase').textContent = msg.onlyMetabase.length.toLocaleString();
+    document.getElementById('badgeOnlyEshipz').textContent = msg.onlyEshipz.length.toLocaleString();
+
+    populateTable('commonTable', msg.common);
+    populateTable('onlyMetabaseTable', msg.onlyMetabase);
+    populateTable('onlyEshipzTable', msg.onlyEshipz);
+
+    resultsSection.classList.add('visible');
+
+    var statusMsg = 'Done! Found <strong>' + msg.common.length.toLocaleString() + '</strong> common AWBs out of <strong>' + msg.metabaseCount.toLocaleString() + '</strong> Metabase and <strong>' + msg.eshipzCount.toLocaleString() + '</strong> EShipz unique AWBs.';
+    if (msg.errors.length) statusMsg += '<br><br><strong>Warnings:</strong><br>' + msg.errors.map(escapeHtml).join('<br>');
+    showStatus(statusMsg, 'success');
+  }
+
+  function populateTable(tableId, awbs) {
+    var tbody = document.querySelector('#' + tableId + ' tbody');
+    var limit = 500;
+    var display = awbs.slice(0, limit);
+    var html = '';
+    for (var i = 0; i < display.length; i++) {
+      html += '<tr><td>' + (i + 1) + '</td><td>' + escapeHtml(display[i]) + '</td></tr>';
+    }
+    if (awbs.length > limit) {
+      html += '<tr><td colspan="2" style="text-align:center;color:#94a3b8;font-style:italic;">Showing ' + limit + ' of ' + awbs.length.toLocaleString() + ' — download for full list</td></tr>';
+    }
+    if (awbs.length === 0) {
+      html = '<tr><td colspan="2" style="text-align:center;color:#94a3b8;font-style:italic;">No AWBs in this category</td></tr>';
+    }
+    tbody.innerHTML = html;
+  }
+
+  // --- Tabs ---
+  document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.tab-content').forEach(function(t) { t.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // --- Downloads (streamed via Blob to handle large lists) ---
+  function downloadCSV(filename, awbs) {
+    // Build CSV in chunks to avoid a single huge string concatenation
+    var chunkSize = 100000;
+    var parts = ['AWB\n'];
+    for (var i = 0; i < awbs.length; i += chunkSize) {
+      parts.push(awbs.slice(i, i + chunkSize).join('\n'));
+      if (i + chunkSize < awbs.length) parts.push('\n');
+    }
+    var blob = new Blob(parts, { type: 'text/csv' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+  }
+
+  document.getElementById('downloadCommon').addEventListener('click', function() { downloadCSV('common_awbs.csv', resultData.common); });
+  document.getElementById('downloadOnlyMetabase').addEventListener('click', function() { downloadCSV('only_in_metabase.csv', resultData.onlyMetabase); });
+  document.getElementById('downloadOnlyEshipz').addEventListener('click', function() { downloadCSV('only_in_eshipz.csv', resultData.onlyEshipz); });
+
+  // --- Reset ---
+  resetBtn.addEventListener('click', function() {
+    if (worker) { worker.terminate(); worker = null; }
+    metabaseFiles = [];
+    eshipzFiles = [];
+    resultData = { common: [], onlyMetabase: [], onlyEshipz: [] };
+    metabaseFileList.innerHTML = '';
+    eshipzFileList.innerHTML = '';
+    resultsSection.classList.remove('visible');
+    clearStatus();
+    updateCompareBtn();
+    resetBtn.disabled = false;
+  });
+})();
+</script>
+</body>
+</html>
